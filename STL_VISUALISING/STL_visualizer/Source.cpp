@@ -11,33 +11,36 @@ int mm()
 int main()
 #endif 
 {
-	try
-	{
-		container.open("..\\..\\Snowman_ascii.stl");
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "Can't open file. " << e.what();
-		return 1;
-	}
-	for (auto v : container.getVertices())
-	{
-		std::cout << v.x << " - " << v.y << " - " << v.z << std::endl;
-	}
-	std::cout << "vettices end\n";
+    try
+    {
+        if (0)
+            container.open("..\\..\\Snowman_ascii.stl");
+        else
+            container.open("..\\..\\Snowman2.stl");
+    }
+    catch (const std::exception& e)
+    {
+        std::cout << "Can't open file. " << e.what();
+        return 1;
+    }
+    for (auto v : container.getVertices())
+    {
+        std::cout << v.x << " - " << v.y << " - " << v.z << std::endl;
+    }
+    std::cout << "vettices end\n";
 
 
-	//std::cin.get();
+    //std::cin.get();
 
 
-	for (auto v : container.getNormals())
-	{
-		std::cout << v.x << " - " << v.y << " - " << v.z << std::endl;
-	}
+    for (auto v : container.getNormals())
+    {
+        std::cout << v.x << " - " << v.y << " - " << v.z << std::endl;
+    }
 
-	//std::cin.get();
+    //std::cin.get();
 
 
 
-	return 0;
+    return 0;
 }
