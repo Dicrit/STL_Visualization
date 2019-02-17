@@ -45,7 +45,7 @@ void stl_container::openASCII(std::ifstream& file)
 {
     std::string stub;
     std::getline(file, stub);
-    glm::vec3 v;
+    glm::vec3 v{};
     while (true) {
         file >> stub;
 
@@ -54,7 +54,7 @@ void stl_container::openASCII(std::ifstream& file)
             break;
         }
         file >> stub; //normal
-        file >> v.x >> v.y >> v.z; //reading normal
+        file >> v;
         normals.push_back(v);
         file.get();//newline
         std::getline(file, stub);//outer loop
@@ -62,7 +62,7 @@ void stl_container::openASCII(std::ifstream& file)
         for (size_t j = 0; j < 3; j++)
         {
             file >> stub; //vertex
-            file >> v.x >> v.y >> v.z;
+            file >> v;
             vertices.push_back(v);
 
         }
@@ -96,6 +96,10 @@ reader& operator>>(reader& r, T& val) {
 }
 
 
+reader& operator>>(reader& r, glm::vec3& v) {
+    return r >> v.x >> v.y >> v.z;
+}
+
 void stl_container::openBinary(std::ifstream& file)
 {
     reader r(file);
@@ -113,11 +117,11 @@ void stl_container::openBinary(std::ifstream& file)
 
     for (size_t i = 0; i < size; i++)
     {
-        r >> v.x >> v.y >> v.z;
+        r >> v;
         normals.push_back(v);
         for (size_t j = 0; j < 3; j++)
         {
-            r >> v.x >> v.y >> v.z;
+            r >> v;
             vertices.push_back(v);
         }
         r >> attr;

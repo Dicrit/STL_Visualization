@@ -16,7 +16,7 @@ int main()
         if (0)
             container.open("..\\..\\Snowman_ascii.stl");
         else
-            container.open("..\\..\\Snowman2.stl");
+            container.open("..\\..\\Snowman.stl");
     }
     catch (const std::exception& e)
     {
