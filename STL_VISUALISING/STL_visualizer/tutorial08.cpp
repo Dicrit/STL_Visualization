@@ -1,3 +1,4 @@
+#include "stdafx.h"
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,7 +23,11 @@ using namespace glm;
 #include "common/objloader.hpp"
 #include "common/vboindexer.hpp"
 
-int main( void )
+#ifndef GL_USE
+int mm()
+#else
+int main()
+#endif 
 {
 	// Initialise GLFW
 	if( !glfwInit() )

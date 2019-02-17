@@ -1,14 +1,25 @@
+#include "stdafx.h"
 #include <iostream>
 #include "stl_container.h"
 
 
 stl_container container;
 
-
-int mainG()
+#ifdef GL_USE
+int mm()
+#else
+int main()
+#endif 
 {
-	container.open("C:\\Users\\Dicrit_note\\Documents\\Dima\\Курсовая\\Snowman_ascii.stl");
-
+	try
+	{
+		container.open("..\\..\\Snowman_ascii.stl");
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "Can't open file. " << e.what();
+		return 1;
+	}
 	for (auto v : container.getVertices())
 	{
 		std::cout << v.x << " - " << v.y << " - " << v.z << std::endl;

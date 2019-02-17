@@ -15,6 +15,7 @@ void stl_container::open(const char * fileName)
 	{
 		throw std::exception("Unable to open file");
 	}
+
 	const int bufsize = 5;
 	char buf[bufsize];
 	file.read(buf, bufsize);
