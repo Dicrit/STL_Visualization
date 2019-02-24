@@ -1,3 +1,3 @@
 #pragma once
 
-//#define GL_USE
+#define GL_USE

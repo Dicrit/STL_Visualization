@@ -36,7 +36,14 @@ void stl_container::open(const char * fileName)
     }
 }
 
-std::istream& operator>>(std::istream& is, glm::vec3 v)
+std::vector<glm::vec2> stl_container::getUvs()
+{
+    std::vector<glm::vec2> v{ vertices.size() };
+    std::fill(v.begin(), v.end(), glm::vec2(0., 0.));
+    return v;
+}
+
+std::istream& operator>>(std::istream& is, glm::vec3& v)
 {
     return is >> v.x >> v.y >> v.z;
 }

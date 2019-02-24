@@ -13,7 +13,7 @@ int main()
 {
     try
     {
-        if (0)
+        if (1)
             container.open("..\\..\\Snowman_ascii.stl");
         else
             container.open("..\\..\\Snowman.stl");
@@ -23,6 +23,7 @@ int main()
         std::cout << "Can't open file. " << e.what();
         return 1;
     }
+    std::cout << "-----" << container.getUvs().size() << "=====" << container.getVertices().size() << std::endl;
     for (auto v : container.getVertices())
     {
         std::cout << v.x << " - " << v.y << " - " << v.z << std::endl;
@@ -38,7 +39,7 @@ int main()
         std::cout << v.x << " - " << v.y << " - " << v.z << std::endl;
     }
 
-    //std::cin.get();
+    std::cin.get();
 
 
 

@@ -22,6 +22,7 @@ using namespace glm;
 #include "common/controls.hpp"
 #include "common/objloader.hpp"
 #include "common/vboindexer.hpp"
+#include "stl_container.h"
 
 #ifndef GL_USE
 int mm()
@@ -104,7 +105,11 @@ int main()
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec2> uvs;
     std::vector<glm::vec3> normals;
-    bool res = loadOBJ("suzanne.obj", vertices, uvs, normals);
+    stl_container container;
+    container.open("..\\..\\Snowman.stl");
+    vertices = container.getVertices();
+    normals = container.getNormals();
+    uvs = container.getUvs();
 
     // Load it into a VBO
 
