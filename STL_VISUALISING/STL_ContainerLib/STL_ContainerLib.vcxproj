@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stl_container.h" />
+    <ClInclude Include="vecUtils.h" />
     <ClInclude Include="virtualModel.h" />
   </ItemGroup>
   <ItemGroup>

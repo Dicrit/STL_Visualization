@@ -21,6 +21,9 @@
     <ClInclude Include="virtualModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="vecUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stl_container.cpp">

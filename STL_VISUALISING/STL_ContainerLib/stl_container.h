@@ -12,8 +12,11 @@ public:
     void open(const char* fileName);
    std::vector<glm::vec2> getUvs();
 private:
-    void openASCII(std::ifstream& file);
-    void openBinary(std::ifstream& file);
+    void centerize();
+    void normalize(const float size);
+    void readFile(const char* fileName);
+    void readASCII(std::ifstream& file);
+    void readBinary(std::ifstream& file);
 private:
     std::string name;
 };

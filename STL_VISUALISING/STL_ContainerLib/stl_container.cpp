@@ -1,12 +1,41 @@
 #include "stl_container.h"
 #include <fstream>
+#include "vecUtils.h"
+#include <algorithm>
+
+using glm::vec3;
 
 stl_container::stl_container(const char * fileName)
 {
     open(fileName);
 }
 
+
+void stl_container::centerize() 
+{
+    auto avg = average(vertices);
+    for (auto& v : vertices)
+    {
+        v -= avg;
+    }
+}
+void stl_container::normalize(const float size) {
+    glm::vec3 max = *std::max_element(vertices.begin(), vertices.end(), [](const vec3& v1, const vec3& v2) {return v1.length() < v2.length();});
+    float l = max.length();
+    for (auto& v : vertices)
+    {
+        v = v * size / l;
+    }
+}
+
 void stl_container::open(const char * fileName)
+{
+    readFile(fileName);
+    centerize();
+    normalize(0.2);
+}
+
+void stl_container::readFile(const char * fileName)
 {
     std::ifstream file;
 
@@ -21,7 +50,7 @@ void stl_container::open(const char * fileName)
     file.read(buf, bufsize);
     if (std::equal(buf, &buf[bufsize], "solid"))
     {
-        openASCII(file);
+        readASCII(file);
         file.close();
     }
     else {
@@ -31,7 +60,7 @@ void stl_container::open(const char * fileName)
         {
             throw std::exception("Unable to open file");
         }
-        openBinary(file);
+        readBinary(file);
         file.close();
     }
 }
@@ -48,7 +77,7 @@ std::istream& operator>>(std::istream& is, glm::vec3& v)
     return is >> v.x >> v.y >> v.z;
 }
 
-void stl_container::openASCII(std::ifstream& file)
+void stl_container::readASCII(std::ifstream& file)
 {
     std::string stub;
     std::getline(file, stub);
@@ -107,7 +136,7 @@ reader& operator>>(reader& r, glm::vec3& v) {
     return r >> v.x >> v.y >> v.z;
 }
 
-void stl_container::openBinary(std::ifstream& file)
+void stl_container::readBinary(std::ifstream& file)
 {
     reader r(file);
 
