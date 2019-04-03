@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "STL_visualizer", "STL_visualizer\STL_visualizer.vcxproj", "{4E645E38-C3A7-4479-BA7E-748D31640F74}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "STL_ContainerLib", "STL_ContainerLib\STL_ContainerLib.vcxproj", "{5BFF5743-42D0-471F-B7F1-E3E6D6213161}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "STL_Container", "STL_ContainerLib\STL_ContainerLib.vcxproj", "{5BFF5743-42D0-471F-B7F1-E3E6D6213161}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utils", "Utils\Utils.vcxproj", "{BBA75A11-6FFD-40BB-BC3F-67AB0B041E3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,14 @@ Global
 		{5BFF5743-42D0-471F-B7F1-E3E6D6213161}.Release|x64.Build.0 = Release|x64
 		{5BFF5743-42D0-471F-B7F1-E3E6D6213161}.Release|x86.ActiveCfg = Release|Win32
 		{5BFF5743-42D0-471F-B7F1-E3E6D6213161}.Release|x86.Build.0 = Release|Win32
+		{BBA75A11-6FFD-40BB-BC3F-67AB0B041E3B}.Debug|x64.ActiveCfg = Debug|x64
+		{BBA75A11-6FFD-40BB-BC3F-67AB0B041E3B}.Debug|x64.Build.0 = Debug|x64
+		{BBA75A11-6FFD-40BB-BC3F-67AB0B041E3B}.Debug|x86.ActiveCfg = Debug|Win32
+		{BBA75A11-6FFD-40BB-BC3F-67AB0B041E3B}.Debug|x86.Build.0 = Debug|Win32
+		{BBA75A11-6FFD-40BB-BC3F-67AB0B041E3B}.Release|x64.ActiveCfg = Release|x64
+		{BBA75A11-6FFD-40BB-BC3F-67AB0B041E3B}.Release|x64.Build.0 = Release|x64
+		{BBA75A11-6FFD-40BB-BC3F-67AB0B041E3B}.Release|x86.ActiveCfg = Release|Win32
+		{BBA75A11-6FFD-40BB-BC3F-67AB0B041E3B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

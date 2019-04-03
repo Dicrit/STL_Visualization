@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include "ScopeGuard.h"
+
 
 // Include GLEW
 #include "GL/glew.h"
@@ -23,13 +25,37 @@ using namespace glm;
 #include "common/objloader.hpp"
 #include "common/vboindexer.hpp"
 #include "stl_container.h"
-class visualizer {
 
-    std::vector<glm::vec3> vertices ;
+
+template<typename T>
+GLuint genericGenBuffer(std::vector<T> vec)
+{
+    GLuint vertexbuffer;
+    glGenBuffers(1, &vertexbuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+    glBufferData(GL_ARRAY_BUFFER, vec.size() * sizeof(T), &vec[0], GL_STATIC_DRAW);
+    return vertexbuffer;
+}
+
+class visualizer {
+    const glm::vec3 lightPos = glm::vec3(4, 4, 4);
+    std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> uvs;
+    GLuint MatrixID;
+    GLuint ViewMatrixID;
+    GLuint ModelMatrixID;
     GLuint Texture;
-public:
+
+
+    GLuint vertexbuffer;
+    GLuint uvbuffer;
+    GLuint normalbuffer;
+
+    GLuint VertexArrayID;
+
+    GLuint programID;
+
     void initVNU()
     {
         stl_container container("..\\..\\Snowman.stl");
@@ -37,6 +63,22 @@ public:
         normals = container.getNormals();
         uvs = container.getUvs();
         
+    }
+
+    void LoadMVP()
+    {
+        // Compute the MVP matrix from keyboard and mouse input
+        computeMatricesFromInputs();
+        glm::mat4 ProjectionMatrix = getProjectionMatrix();
+        glm::mat4 ViewMatrix = getViewMatrix();
+        glm::mat4 ModelMatrix = glm::mat4(1.0);
+        glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+
+        // Send our transformation to the currently bound shader, 
+        // in the "MVP" uniform
+        glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+        glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+        glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
     }
 
     void initGLFW()
@@ -61,21 +103,29 @@ public:
         glfwMakeContextCurrent(window);
     }
 
-    int main()
+    void cleanup()
     {
-        initVNU();
+        // Cleanup VBO and shader
+        glDeleteBuffers(1, &vertexbuffer);
+        glDeleteBuffers(1, &uvbuffer);
+        glDeleteBuffers(1, &normalbuffer);
+        glDeleteProgram(programID);
+        glDeleteTextures(1, &Texture);
+        glDeleteVertexArrays(1, &VertexArrayID);
+    }
 
-        initGLFW();
-
+    void initGLEW()
+    {
         // Initialize GLEW
         glewExperimental = true; // Needed for core profile
         if (glewInit() != GLEW_OK) {
-            fprintf(stderr, "Failed to initialize GLEW\n");
-            getchar();
             glfwTerminate();
-            return -1;
+            throw std::exception("Failed to initialize GLEW\n");
         }
+    }
 
+    void setupEnv()
+    {
         // Ensure we can capture the escape key being pressed below
         glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
         // Hide the mouse and enable unlimited mouvement
@@ -95,43 +145,42 @@ public:
 
         // Cull triangles which normal is not towards the camera
         glEnable(GL_CULL_FACE);
+    }
 
-        GLuint VertexArrayID;
+public:
+    int main()
+    {
+        initVNU();
+        
+        initGLFW();
+        ScopeGuard guard{ glfwTerminate };
+
+        initGLEW();
+
+        setupEnv();
+
         glGenVertexArrays(1, &VertexArrayID);
         glBindVertexArray(VertexArrayID);
 
         // Create and compile our GLSL program from the shaders
-        GLuint programID = LoadShaders("StandardShading.vertexshader", "StandardShading.fragmentshader");
+        programID = LoadShaders("StandardShading.vertexshader", "StandardShading.fragmentshader");
 
         // Get a handle for our "MVP" uniform
-        GLuint MatrixID = glGetUniformLocation(programID, "MVP");
-        GLuint ViewMatrixID = glGetUniformLocation(programID, "V");
-        GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
+        MatrixID = glGetUniformLocation(programID, "MVP");
+        ViewMatrixID = glGetUniformLocation(programID, "V");
+        ModelMatrixID = glGetUniformLocation(programID, "M");
 
         Texture = loadDDS("uvmap.DDS");
         // Get a handle for our "myTextureSampler" uniform
         GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
 
-        GLuint vertexbuffer;
-        glGenBuffers(1, &vertexbuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
-
-        GLuint uvbuffer;
-        glGenBuffers(1, &uvbuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-        glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
-
-        GLuint normalbuffer;
-        glGenBuffers(1, &normalbuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-        glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
+        vertexbuffer = genericGenBuffer(vertices);
+        uvbuffer = genericGenBuffer(uvs);
+        normalbuffer = genericGenBuffer(normals);
 
         // Get a handle for our "LightPosition" uniform
         glUseProgram(programID);
         GLuint LightID = glGetUniformLocation(programID, "LightPosition_worldspace");
-
-        const glm::vec3 lightPos = glm::vec3(4, 4, 4);
 
         do {
             // Clear the screen
@@ -140,18 +189,7 @@ public:
             // Use our shader
             glUseProgram(programID);
 
-            // Compute the MVP matrix from keyboard and mouse input
-            computeMatricesFromInputs();
-            glm::mat4 ProjectionMatrix = getProjectionMatrix();
-            glm::mat4 ViewMatrix = getViewMatrix();
-            glm::mat4 ModelMatrix = glm::mat4(1.0);
-            glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-
-            // Send our transformation to the currently bound shader, 
-            // in the "MVP" uniform
-            glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-            glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-            glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
+            LoadMVP();
 
             glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
@@ -212,16 +250,7 @@ public:
         while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
             glfwWindowShouldClose(window) == 0);
 
-        // Cleanup VBO and shader
-        glDeleteBuffers(1, &vertexbuffer);
-        glDeleteBuffers(1, &uvbuffer);
-        glDeleteBuffers(1, &normalbuffer);
-        glDeleteProgram(programID);
-        glDeleteTextures(1, &Texture);
-        glDeleteVertexArrays(1, &VertexArrayID);
-
-        // Close OpenGL window and terminate GLFW
-        glfwTerminate();
+        cleanup();
         return 0;
     }
 };
