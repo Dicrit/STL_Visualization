@@ -24,25 +24,16 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tutorial08.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="common\shader.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="common\texture.cpp">
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="common\controls.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="common\objloader.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="common\vboindexer.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,16 +50,7 @@
     <ClInclude Include="common\shader.hpp">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="common\texture.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="common\controls.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="common\objloader.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="common\vboindexer.hpp">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">

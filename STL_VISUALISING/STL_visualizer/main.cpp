@@ -1,31 +1,14 @@
 #include "stdafx.h"
 // Include standard headers
-#include <stdio.h>
-#include <stdlib.h>
-#include <vector>
 #include "ScopeGuard.h"
-
-
-// Include GLEW
 #include "GL/glew.h"
-
-// Include GLFW
 #include <GLFW/glfw3.h>
-GLFWwindow* window;
-
-// Include GLM
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-using namespace glm;
-
-
 #include "common/shader.hpp"
-#include "common/texture.hpp"
 #include "common/controls.hpp"
-#include "common/objloader.hpp"
-#include "common/vboindexer.hpp"
 #include "stl_container.h"
-
+using namespace glm;
 
 template<typename T>
 GLuint genericGenBuffer(std::vector<T> vec)
@@ -38,18 +21,18 @@ GLuint genericGenBuffer(std::vector<T> vec)
 }
 
 class visualizer {
+
+    GLFWwindow* window;
+
     const glm::vec3 lightPos = glm::vec3(4, 4, 4);
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> normals;
-    std::vector<glm::vec2> uvs;
     GLuint MatrixID;
     GLuint ViewMatrixID;
     GLuint ModelMatrixID;
-    GLuint Texture;
 
 
     GLuint vertexbuffer;
-    GLuint uvbuffer;
     GLuint normalbuffer;
 
     GLuint VertexArrayID;
@@ -61,14 +44,12 @@ class visualizer {
         stl_container container("..\\..\\Snowman.stl");
         vertices = container.getVertices();
         normals = container.getNormals();
-        uvs = container.getUvs();
-        
     }
 
     void LoadMVP()
     {
         // Compute the MVP matrix from keyboard and mouse input
-        computeMatricesFromInputs();
+        computeMatricesFromInputs(window);
         glm::mat4 ProjectionMatrix = getProjectionMatrix();
         glm::mat4 ViewMatrix = getViewMatrix();
         glm::mat4 ModelMatrix = glm::mat4(1.0);
@@ -107,10 +88,8 @@ class visualizer {
     {
         // Cleanup VBO and shader
         glDeleteBuffers(1, &vertexbuffer);
-        glDeleteBuffers(1, &uvbuffer);
         glDeleteBuffers(1, &normalbuffer);
         glDeleteProgram(programID);
-        glDeleteTextures(1, &Texture);
         glDeleteVertexArrays(1, &VertexArrayID);
     }
 
@@ -170,12 +149,7 @@ public:
         ViewMatrixID = glGetUniformLocation(programID, "V");
         ModelMatrixID = glGetUniformLocation(programID, "M");
 
-        Texture = loadDDS("uvmap.DDS");
-        // Get a handle for our "myTextureSampler" uniform
-        GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
-
         vertexbuffer = genericGenBuffer(vertices);
-        uvbuffer = genericGenBuffer(uvs);
         normalbuffer = genericGenBuffer(normals);
 
         // Get a handle for our "LightPosition" uniform
@@ -193,12 +167,6 @@ public:
 
             glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
-            // Bind our texture in Texture Unit 0
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, Texture);
-            // Set our "myTextureSampler" sampler to use Texture Unit 0
-            glUniform1i(TextureID, 0);
-
             // 1rst attribute buffer : vertices
             glEnableVertexAttribArray(0);
             glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -211,23 +179,11 @@ public:
                 (void*)0            // array buffer offset
             );
 
-            // 2nd attribute buffer : UVs
-            glEnableVertexAttribArray(1);
-            glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-            glVertexAttribPointer(
-                1,                                // attribute
-                2,                                // size
-                GL_FLOAT,                         // type
-                GL_FALSE,                         // normalized?
-                0,                                // stride
-                (void*)0                          // array buffer offset
-            );
-
             // 3rd attribute buffer : normals
-            glEnableVertexAttribArray(2);
+            glEnableVertexAttribArray(1);
             glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
             glVertexAttribPointer(
-                2,                                // attribute
+                1,                                // attribute
                 3,                                // size
                 GL_FLOAT,                         // type
                 GL_FALSE,                         // normalized?
@@ -240,7 +196,6 @@ public:
 
             glDisableVertexAttribArray(0);
             glDisableVertexAttribArray(1);
-            glDisableVertexAttribArray(2);
 
             // Swap buffers
             glfwSwapBuffers(window);
