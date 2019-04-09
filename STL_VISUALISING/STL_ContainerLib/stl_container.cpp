@@ -65,13 +65,6 @@ void stl_container::readFile(const char * fileName)
     }
 }
 
-std::vector<glm::vec2> stl_container::getUvs()
-{
-    std::vector<glm::vec2> v{ vertices.size() };
-    std::fill(v.begin(), v.end(), glm::vec2(0., 0.));
-    return v;
-}
-
 std::istream& operator>>(std::istream& is, glm::vec3& v)
 {
     return is >> v.x >> v.y >> v.z;
@@ -91,6 +84,8 @@ void stl_container::readASCII(std::ifstream& file)
         }
         file >> stub; //normal
         file >> v;
+        normals.push_back(v);
+        normals.push_back(v);
         normals.push_back(v);
         file.get();//newline
         std::getline(file, stub);//outer loop
@@ -155,11 +150,29 @@ void stl_container::readBinary(std::ifstream& file)
     {
         r >> v;
         normals.push_back(v);
+        normals.push_back(v);
+        normals.push_back(v);
         for (size_t j = 0; j < 3; j++)
         {
             r >> v;
             vertices.push_back(v);
         }
         r >> attr;
+    }
+}
+
+void stl_container::recalculateNormals()
+{
+    normals.clear();
+    normals.reserve(vertices.size() / 3);
+
+    for (size_t i = 0; i < vertices.size(); i += 3)
+    {
+        auto a = vertices[i + 1] - vertices[i];
+        auto b = vertices[i + 2] - vertices[i];
+        auto cross = glm::cross(a, b);
+        normals.push_back(glm::normalize(cross));
+        normals.push_back(glm::normalize(cross));
+        normals.push_back(glm::normalize(cross));
     }
 }

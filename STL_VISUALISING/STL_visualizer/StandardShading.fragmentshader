@@ -42,5 +42,4 @@ void main()
     color = MaterialAmbientColor +
         MaterialDiffuseColor * LightColor * diffuse_power +
         MaterialSpecularColor * LightColor * specular_power;
-
 }
