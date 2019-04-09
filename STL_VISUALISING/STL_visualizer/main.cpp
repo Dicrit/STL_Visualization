@@ -1,5 +1,4 @@
 #include "stdafx.h"
-// Include standard headers
 #include "ScopeGuard.h"
 #include "GL/glew.h"
 #include <GLFW/glfw3.h>
@@ -27,12 +26,12 @@ class visualizer
     GLFWwindow* window;
 
     const glm::vec3 lightPos = glm::vec3(4, 4, 4);
+
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> normals;
     GLuint MatrixID;
     GLuint ViewMatrixID;
     GLuint ModelMatrixID;
-
 
     GLuint vertexbuffer;
     GLuint normalbuffer;
