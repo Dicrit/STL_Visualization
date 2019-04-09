@@ -5,9 +5,10 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "common/shader.hpp"
-#include "common/controls.hpp"
+#include "shader.hpp"
+#include "controls.hpp"
 #include "stl_container.h"
+
 using namespace glm;
 
 template<typename T>
@@ -20,7 +21,8 @@ GLuint genericGenBuffer(std::vector<T> vec)
     return vertexbuffer;
 }
 
-class visualizer {
+class visualizer
+{
 
     GLFWwindow* window;
 
@@ -156,7 +158,8 @@ public:
         glUseProgram(programID);
         GLuint LightID = glGetUniformLocation(programID, "LightPosition_worldspace");
 
-        do {
+        do
+        {
             // Clear the screen
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -202,7 +205,8 @@ public:
             glfwPollEvents();
 
         } // Check if the ESC key was pressed or the window was closed
-        while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+        while (
+            glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
             glfwWindowShouldClose(window) == 0);
 
         cleanup();

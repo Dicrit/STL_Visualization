@@ -24,17 +24,17 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="common\shader.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="common\controls.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="controls.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="shader.cpp">
+      <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,14 +47,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common\shader.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="common\controls.hpp">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="controls.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.hpp">
+      <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
