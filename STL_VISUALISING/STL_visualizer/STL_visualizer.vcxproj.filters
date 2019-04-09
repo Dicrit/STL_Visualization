@@ -50,10 +50,10 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="controls.hpp">
+    <ClInclude Include="controls.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="shader.hpp">
+    <ClInclude Include="shader.h">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>

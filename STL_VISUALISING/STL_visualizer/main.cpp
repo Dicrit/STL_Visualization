@@ -1,11 +1,7 @@
 #include "stdafx.h"
 #include "ScopeGuard.h"
-#include "GL/glew.h"
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include "shader.hpp"
-#include "controls.hpp"
+#include "shader.h"
+#include "controls.h"
 #include "stl_container.h"
 
 using namespace glm;
@@ -20,8 +16,18 @@ GLuint genericGenBuffer(std::vector<T> vec)
     return vertexbuffer;
 }
 
-class visualizer
+
+
+class Visualizer
 {
+public:
+    Visualizer():
+        resolution(glm::ivec2(1024, 768)),
+        controls(resolution)
+    {
+
+    }
+private:
 
     GLFWwindow* window;
 
@@ -40,6 +46,11 @@ class visualizer
 
     GLuint programID;
 
+    const glm::ivec2 resolution;
+
+    Controls controls;
+
+
     void initVNU()
     {
         stl_container container("..\\..\\Snowman.stl");
@@ -50,9 +61,9 @@ class visualizer
     void LoadMVP()
     {
         // Compute the MVP matrix from keyboard and mouse input
-        computeMatricesFromInputs(window);
-        glm::mat4 ProjectionMatrix = getProjectionMatrix();
-        glm::mat4 ViewMatrix = getViewMatrix();
+        controls.computeMatricesFromInputs(window);
+        glm::mat4 ProjectionMatrix = controls.getProjectionMatrix();
+        glm::mat4 ViewMatrix = controls.getViewMatrix();
         glm::mat4 ModelMatrix = glm::mat4(1.0);
         glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
@@ -77,7 +88,7 @@ class visualizer
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         // Open a window and create its OpenGL context
-        window = glfwCreateWindow(1024, 768, "Stl visualizer", NULL, NULL);
+        window = glfwCreateWindow(resolution.x, resolution.y, "Stl visualizer", NULL, NULL);
         if (window == NULL) {
             glfwTerminate();
             throw std::exception("Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
@@ -113,7 +124,7 @@ class visualizer
 
         // Set the mouse at the center of the screen
         glfwPollEvents();
-        glfwSetCursorPos(window, 1024 / 2, 768 / 2);
+        glfwSetCursorPos(window, resolution.x / 2, resolution.y / 2);
 
         // Dark blue background
         glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -219,7 +230,7 @@ int mm()
 int main()
 #endif 
 {
-    visualizer v;
+    Visualizer v;
     v.main();
     return 0;
 }

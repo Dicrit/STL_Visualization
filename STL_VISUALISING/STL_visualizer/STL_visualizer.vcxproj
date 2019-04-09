@@ -167,8 +167,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="controls.hpp" />
-    <ClInclude Include="shader.hpp" />
+    <ClInclude Include="controls.h" />
+    <ClInclude Include="shader.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,5 @@
 #include "stdafx.h"
-#include <GL/glew.h>
-#include "shader.hpp"
+#include "shader.h"
 
 using namespace std;
 
