@@ -53,7 +53,7 @@ private:
 
     void initVNU()
     {
-        stl_container container("..\\..\\Snowman.stl");
+        stl_container container("..\\..\\porsche.stl");
         vertices = container.getVertices();
         normals = container.getNormals();
     }
