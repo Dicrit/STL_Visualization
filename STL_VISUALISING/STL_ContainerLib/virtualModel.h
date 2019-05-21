@@ -2,16 +2,23 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-class virtualModel
+namespace stl
 {
-public:
-    virtualModel();
-    virtual ~virtualModel();
+    namespace model
+    {
 
-    std::vector<glm::vec3>& getVertices();
-    std::vector<glm::vec3>& getNormals();
-protected:
-    std::vector<glm::vec3> vertices;
-    std::vector<glm::vec3> normals;
-};
+        class virtualModel
+        {
+        public:
+            virtualModel();
+            virtual ~virtualModel();
 
+            std::vector<glm::vec3>& getVertices();
+            std::vector<glm::vec3>& getNormals();
+        protected:
+            std::vector<glm::vec3> vertices;
+            std::vector<glm::vec3> normals;
+        };
+
+    }
+}

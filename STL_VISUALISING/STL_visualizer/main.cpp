@@ -12,11 +12,12 @@ int main(int argc, char* argv[])
 {
     if (argc != 2)
     {
-        std::cout << "enter file name" << std::endl;
+        std::cout << "Enter file name" << std::endl;
         return 1;
     }
-    stl_container container(argv[1]);
-    Visualizer v(std::move(container));
+    stl::model::stl_container container(argv[1]);
+    stl::visualization::Visualizer v(std::move(container));
+
     v.run();
     return 0;
 }

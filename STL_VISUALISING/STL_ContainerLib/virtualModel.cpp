@@ -1,7 +1,6 @@
 #include "virtualModel.h"
 
 
-
 virtualModel::virtualModel()
 {
 }

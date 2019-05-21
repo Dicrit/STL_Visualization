@@ -6,46 +6,57 @@
 #include "stl_container.h"
 #include "gl_utils.h"
 
-
-class Visualizer
+namespace stl
 {
-public:
-    explicit Visualizer(stl_container container);
-    int run();
-private:
-    stl_container m_container;
-    GLFWwindow* window;
+    namespace visualization
+    {
+        class Visualizer
+        {
 
-    const glm::vec3 lightPos = glm::vec3(4, 4, 4);
+        public:
+            template <class model_type>
+            explicit Visualizer(model_type&& container)
+                : resolution(glm::ivec2(1024, 768))
+                , controls(resolution)
+                , vertices(container.getVertices())
+                , normals(container.getNormals())
+            {
+            }
 
-    std::vector<glm::vec3> vertices;
-    std::vector<glm::vec3> normals;
-    GLuint MatrixID;
-    GLuint ViewMatrixID;
-    GLuint ModelMatrixID;
+            int run();
+        private:
+            //stl_container m_container;
+            GLFWwindow* window;
 
-    GLuint vertexbuffer;
-    GLuint normalbuffer;
+            const glm::vec3 lightPos = glm::vec3(4, 4, 4);
 
-    GLuint VertexArrayID;
+            std::vector<glm::vec3> vertices;
+            std::vector<glm::vec3> normals;
+            GLuint MatrixID;
+            GLuint ViewMatrixID;
+            GLuint ModelMatrixID;
 
-    GLuint programID;
+            GLuint vertexbuffer;
+            GLuint normalbuffer;
 
-    const glm::ivec2 resolution;
+            GLuint VertexArrayID;
 
-    Controls controls;
+            GLuint programID;
 
+            const glm::ivec2 resolution;
 
-    void initVNU();
+            Controls controls;
 
-    void LoadMVP();
+            void LoadMVP();
 
-    void initGLFW();
+            void initGLFW();
 
-    void cleanup();
+            void cleanup();
 
-    void initGLEW();
+            void initGLEW();
 
-    void setupEnv();
-    
-};
+            void setupEnv();
+
+        };
+    }
+}

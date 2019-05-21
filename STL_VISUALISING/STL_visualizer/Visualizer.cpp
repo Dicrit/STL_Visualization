@@ -1,20 +1,6 @@
 #include "stdafx.h"
 #include "Visualizer.h"
 
-
-Visualizer::Visualizer(stl_container container) :
-    resolution(glm::ivec2(1024, 768)),
-    controls(resolution),
-    m_container(std::move(container))
-{
-}
-
-void Visualizer::initVNU()
-{
-    vertices = m_container.getVertices();
-    normals = m_container.getNormals();
-}
-
 inline void Visualizer::LoadMVP()
 {
     // Compute the MVP matrix from keyboard and mouse input
@@ -96,8 +82,6 @@ inline void Visualizer::setupEnv()
 
 int Visualizer::run()
 {
-    initVNU();
-
     initGLFW();
     ScopeGuard guard{ glfwTerminate };
 
