@@ -131,6 +131,16 @@ reader& operator>>(reader& r, glm::vec3& v) {
     return r >> v.x >> v.y >> v.z;
 }
 
+#define attr_t unsigned short
+glm::vec3 attr2rgb(attr_t attr)
+{
+    attr_t r = attr, g = attr >> 5, b = attr >> 10;
+    r &= (unsigned short)31;
+    g &= (unsigned short)31;
+    b &= (unsigned short)31;
+    return glm::vec3(r / 31., g / 31., b/31.);
+}
+
 void stl_container::readBinary(std::ifstream& file)
 {
     reader r(file);
@@ -143,7 +153,7 @@ void stl_container::readBinary(std::ifstream& file)
 
     glm::vec3 v;
     static_assert(sizeof(v.x) == 4, "point coords must be float32");
-    unsigned short attr;
+    attr_t attr;
     static_assert(sizeof(attr) == 2, "attributes must be ushort16");
 
     for (size_t i = 0; i < size; i++)
@@ -158,6 +168,9 @@ void stl_container::readBinary(std::ifstream& file)
             vertices.push_back(v);
         }
         r >> attr;
+        attr2rgb(attr);
+        if (attr)
+            int a = 12;
     }
 }
 
