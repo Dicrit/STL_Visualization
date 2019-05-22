@@ -1,9 +1,8 @@
 #include "stdafx.h"
-
 #include <glm/gtc/matrix_transform.hpp>
-using namespace glm;
-
 #include "controls.h"
+
+using namespace glm;
 
 glm::mat4 Controls::getViewMatrix()
 {
@@ -28,14 +27,11 @@ void Controls::computeMatricesFromInputs(GLFWwindow* window)
     double currentTime = glfwGetTime();
     float deltaTime = float(currentTime - lastTime);
 
-    // Get mouse position
-    double xpos, ypos;
-    glfwGetCursorPos(window, &xpos, &ypos);
-
-    glfwSetCursorPos(window, resolution.x / 2, resolution.y / 2);
-
-    horizontalAngle += mouseSpeed * float(resolution.x / 2 - xpos);
-    verticalAngle += mouseSpeed * float(resolution.y / 2 - ypos);
+    float horizontal = 0;
+    float vertical = 0;
+    m_input.getInputAxes(window, horizontal, vertical);
+    horizontalAngle += mouseSpeed * horizontal;
+    verticalAngle += mouseSpeed * vertical;
 
     direction = glm::vec3(
         cos(verticalAngle) * sin(horizontalAngle),

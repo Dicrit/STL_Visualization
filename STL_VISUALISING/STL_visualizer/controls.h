@@ -1,10 +1,12 @@
 #pragma once
 
+#include "InputProvider.h"
+
 class Controls
 {
 public:
-    Controls(const glm::ivec2 window_resolution)
-        :resolution(window_resolution)
+    explicit Controls(const glm::ivec2& window_resolution)
+        :m_input(window_resolution)
     {
     }
 
@@ -12,7 +14,6 @@ public:
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix();
 private:
-    const glm::ivec2 resolution;
     glm::vec3 position = glm::vec3(0, 0, 5);
 
     float horizontalAngle = 3.14f;
@@ -26,7 +27,7 @@ private:
     glm::vec3 direction;
     glm::vec3 right;
 
-
+    stl::InputProvider m_input;
     double lastTime = 0;
 
     const float Pi = 3.14f;

@@ -3,7 +3,7 @@
 #include "stl_container.h"
 
 
-stl_container container;
+stl::model::stl_container container;
 
 #ifdef GL_USE
 int mm()
