@@ -17,10 +17,11 @@ int main(int argc, char* argv[])
         return 1;
     }
     int result = 0;
+    stl::model::stl_container container;
     try
     {
         std::cout << "Loading model..." << std::endl;
-        stl::model::stl_container container(argv[1]);
+        container.open(argv[1]);
         std::cout << "Model has been loaded." << std::endl;
         std::cout << "Starting visualization..." << std::endl;
         stl::visualization::Visualizer v(std::move(container));

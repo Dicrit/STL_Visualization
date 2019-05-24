@@ -15,17 +15,16 @@ namespace stl
 
         public:
             template <class model_type>
-            explicit Visualizer(model_type&& container)
+            explicit Visualizer(model_type container)
                 : resolution(glm::ivec2(1024, 768))
                 , controls(resolution)
-                , vertices(container.getVertices())
-                , normals(container.getNormals())
+                , vertices(std::move(container.getVertices()))
+                , normals(std::move(container.getNormals()))
             {
             }
 
             int run();
         private:
-            //stl_container m_container;
             GLFWwindow* window;
 
             const glm::vec3 lightPos = glm::vec3(4, 4, 4);

@@ -46,7 +46,7 @@ namespace stl
             file.open(fileName);
             if (!file)
             {
-                throw std::exception("Unable to open file");
+                throw std::runtime_error(std::string("Unable to open file: ") + fileName);
             }
 
             const int bufsize = 5;
@@ -62,7 +62,7 @@ namespace stl
                 file.open(fileName, std::fstream::binary);
                 if (!file)
                 {
-                    throw std::exception("Unable to open file");
+                    throw std::runtime_error(std::string("Unable to open file: ") + fileName);
                 }
                 readBinary(file);
                 file.close();
@@ -117,7 +117,8 @@ namespace stl
         }
 
 
-        class reader {
+        class reader
+        {
         public:
             std::ifstream& _file;
             explicit reader(std::ifstream& file) : _file(file)
@@ -125,13 +126,15 @@ namespace stl
         };
 
         template <class T>
-        reader& operator>>(reader& r, T& val) {
+        reader& operator>>(reader& r, T& val)
+        {
             Read(&val, r._file);
             return r;
         }
 
 
-        reader& operator>>(reader& r, glm::vec3& v) {
+        reader& operator>>(reader& r, glm::vec3& v)
+        {
             return r >> v.x >> v.y >> v.z;
         }
 
