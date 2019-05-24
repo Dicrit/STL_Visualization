@@ -14,6 +14,8 @@ namespace stl
             stl_container() = default;
             explicit stl_container(const char* fileName);
             void open(const char* fileName);
+            std::vector<glm::vec3>& getVertices() override;
+            std::vector<glm::vec3>& getNormals() override;
         private:
             void centerize();
             void normalize(const float size);
@@ -23,6 +25,8 @@ namespace stl
             void recalculateNormals();
         private:
             std::string name;
+            std::vector<glm::vec3> vertices;
+            std::vector<glm::vec3> normals;
         };
     }
 }

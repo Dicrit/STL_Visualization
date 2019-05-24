@@ -193,5 +193,15 @@ namespace stl
                 normals.push_back(glm::normalize(cross));
             }
         }
+
+        std::vector<glm::vec3>& stl_container::getVertices()
+        {
+            return vertices;
+        }
+
+        std::vector<glm::vec3>& stl_container::getNormals()
+        {
+            return normals;
+        }
     }
 }

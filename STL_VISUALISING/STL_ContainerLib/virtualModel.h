@@ -6,19 +6,14 @@ namespace stl
 {
     namespace model
     {
-
         class virtualModel
         {
         public:
             virtualModel();
             virtual ~virtualModel();
 
-            std::vector<glm::vec3>& getVertices();
-            std::vector<glm::vec3>& getNormals();
-        protected:
-            std::vector<glm::vec3> vertices;
-            std::vector<glm::vec3> normals;
+            virtual std::vector<glm::vec3>& getVertices() = 0;
+            virtual std::vector<glm::vec3>& getNormals() = 0;
         };
-
     }
 }

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Visualizer.h"
 #include "stl_container.h"
+#include <Windows.h>
 
 using namespace glm;
 
@@ -12,12 +13,27 @@ int main(int argc, char* argv[])
 {
     if (argc != 2)
     {
-        std::cout << "Enter file name" << std::endl;
+        std::cout << "File name is absent" << std::endl;
         return 1;
     }
-    stl::model::stl_container container(argv[1]);
-    stl::visualization::Visualizer v(std::move(container));
+    int result = 0;
+    try
+    {
+        std::cout << "Loading model..." << std::endl;
+        stl::model::stl_container container(argv[1]);
+        std::cout << "Model has been loaded." << std::endl;
+        std::cout << "Starting visualization..." << std::endl;
+        stl::visualization::Visualizer v(std::move(container));
+        result = v.run();
+    }
+    catch (const std::exception& ex)
+    {
+        std::cout << "error happened while run program: " << ex.what() << std::endl;
+        if (::IsDebuggerPresent())
+        {
+            system("pause");
+        }
+    }
 
-    v.run();
-    return 0;
+    return result;
 }

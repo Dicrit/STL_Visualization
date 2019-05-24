@@ -11,11 +11,10 @@ namespace stl
         glm::vec3 right = glm::cross(c_up, position);
         glm::vec3 up = glm::cross(position, right);
 
-        // Camera matrix
         return glm::lookAt(
             position,           // Camera is here
-            glm::vec3(), // and looks here
-            up // Head is up (set to 0,-1,0 to look upside-down)
+            glm::vec3(),        // and looks here
+            up                  // Head is up (set to 0,-1,0 to look upside-down)
         );
     }
 
@@ -51,7 +50,7 @@ namespace stl
             radius += deltaTime * m_scaleSpeed;
         }
         if (radius < 0)
-            radius = 0;
+            radius = 0.000001f;
 
         lastTime = currentTime;
     }
