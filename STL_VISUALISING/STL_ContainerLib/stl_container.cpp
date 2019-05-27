@@ -49,10 +49,10 @@ namespace stl
                 throw std::runtime_error(std::string("Unable to open file: ") + fileName);
             }
 
-            const int bufsize = 5;
+            const int bufsize = 6;
             char buf[bufsize];
             file.read(buf, bufsize);
-            if (std::equal(buf, &buf[bufsize], "solid"))
+            if (std::equal(buf, &buf[bufsize], "solid ") || std::equal(buf, &buf[bufsize], " solid"))
             {
                 readASCII(file);
                 file.close();

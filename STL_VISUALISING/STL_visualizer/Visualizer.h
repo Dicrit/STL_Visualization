@@ -28,6 +28,7 @@ namespace stl
             GLFWwindow* window;
 
             const glm::vec3 lightPos = glm::vec3(4, 4, 4);
+            glm::vec4 bgColor = glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
 
             std::vector<glm::vec3> vertices;
             std::vector<glm::vec3> normals;

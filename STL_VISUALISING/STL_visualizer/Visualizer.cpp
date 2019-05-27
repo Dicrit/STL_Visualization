@@ -72,8 +72,7 @@ namespace stl
             glfwPollEvents();
             glfwSetCursorPos(window, resolution.x / 2, resolution.y / 2);
 
-            // Dark blue background
-            glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+            glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
 
             // Enable depth test
             glEnable(GL_DEPTH_TEST);
